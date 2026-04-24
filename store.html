@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store | German Fitness & Sports</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .store-header {
+            padding: 10rem 0 5rem;
+            text-align: center;
+            background: linear-gradient(to bottom, #000, #0a0a0a);
+        }
+        .store-filters {
+            margin-bottom: 3rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .filter-btn {
+            padding: 0.6rem 1.8rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            color: var(--text);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: var(--font-body);
+            font-weight: 500;
+        }
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--accent);
+        }
+        .filter-btn.active {
+            background: var(--accent);
+            color: var(--primary);
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(204, 255, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">GERMAN <span>FITNESS</span></div>
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html#home">Home</a></li>
+            <li><a href="index.html#services">Services</a></li>
+            <li><a href="store.html" class="text-accent">Store</a></li>
+            <li><a href="index.html#blogs">Blogs</a></li>
+            <li><a href="index.html#reviews">Reviews</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+            <li><a href="admin.html" class="nav-admin">Admin</a></li>
+        </ul>
+        <a href="index.html#join" class="btn btn-primary nav-join">Join Now</a>
+    </nav>
+
+    <header class="store-header">
+        <div class="container">
+            <h1 class="text-accent">SUPPLEMENT STORE</h1>
+            <p>Premium quality supplements for your fitness goals.</p>
+        </div>
+    </header>
+
+    <section class="store-content">
+        <div class="container">
+            <div class="store-filters">
+                <button class="filter-btn active" data-filter="all">All Products</button>
+                <button class="filter-btn" data-filter="protein">Protein</button>
+                <button class="filter-btn" data-filter="preworkout">Pre-Workout</button>
+            </div>
+            <div class="products-grid" id="all-products">
+                <!-- Products will be loaded via JS -->
+            </div>
+        </div>
+    </section>
+
+    <div id="purchase-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2 class="text-accent">Order Details</h2>
+            <div id="order-summary" style="margin-bottom: 2rem; padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: var(--radius); border: 1px solid var(--glass-border);">
+                <!-- Details injected by JS -->
+            </div>
+            <div class="form-group">
+                <label for="order_name">Your Name</label>
+                <input type="text" id="order_name" required placeholder="Enter your name">
+            </div>
+            <div class="form-group">
+                <label for="order_phone">Phone Number</label>
+                <input type="tel" id="order_phone" required placeholder="+92 300 0000000">
+            </div>
+            <div class="modal-btns" style="margin-top: 2rem;">
+                <button id="confirm-order" class="btn btn-primary">Send Order to WhatsApp</button>
+                <button id="close-purchase-modal" class="btn btn-outline">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                &copy; 2026 German Fitness & Sports. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const SUPABASE_URL = 'https://kpgzuapbllzhatakkcts.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_fL8D4BepEkupdCNsnMaW1Q_E76Za12D';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        let currentProduct = null;
+
+        // Mobile Menu
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+        mobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        async function loadProducts() {
+            const productsContainer = document.getElementById('all-products');
+            
+            try {
+                const { data: products, error } = await supabaseClient
+                    .from('products')
+                    .select('*');
+
+                if (error) throw error;
+
+                productsContainer.innerHTML = products.map(product => {
+                    const isOutOfStock = product.stock <= 0;
+                    return `
+                        <div class="product-card" style="${isOutOfStock ? 'opacity: 0.7;' : ''}">
+                            <div class="product-image">
+                                <img src="${product.image_url}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/200?text=Product'">
+                            </div>
+                            <div class="product-info">
+                                <h4>${product.name}</h4>
+                                <p class="product-price">
+                                    <span>${product.price} PKR</span>
+                                    ${isOutOfStock ? '<span class="out-of-stock">Out of Stock</span>' : ''}
+                                </p>
+                                <button onclick="${isOutOfStock ? '' : `openPurchaseModal('${product.id}', '${product.name}', ${product.price})`}" 
+                                        class="btn btn-primary btn-block" 
+                                        style="margin-top: 1rem; ${isOutOfStock ? 'background: #333; cursor: not-allowed; color: #777;' : ''}"
+                                        ${isOutOfStock ? 'disabled' : ''}>
+                                    ${isOutOfStock ? 'Sold Out' : 'Buy Now'}
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                console.error('Error loading products:', error);
+            }
+        }
+
+        function openPurchaseModal(id, name, price) {
+            currentProduct = { id, name, price, qty: 1, total: price };
+            updateOrderSummary();
+            document.getElementById('purchase-modal').style.display = 'flex';
+        }
+
+        function updateOrderSummary() {
+            document.getElementById('order-summary').innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <strong style="font-size: 1.2rem;">${currentProduct.name}</strong>
+                    <span style="color: var(--accent); font-weight: 700;">${currentProduct.price} PKR</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <span>Quantity:</span>
+                    <div style="display: flex; align-items: center; background: var(--glass); border-radius: 5px; border: 1px solid var(--glass-border);">
+                        <button onclick="changeQty(-1)" style="padding: 0.5rem 1rem; background: none; border: none; color: #fff; cursor: pointer;">-</button>
+                        <span id="modal-qty" style="width: 30px; text-align: center; font-weight: 700;">${currentProduct.qty}</span>
+                        <button onclick="changeQty(1)" style="padding: 0.5rem 1rem; background: none; border: none; color: #fff; cursor: pointer;">+</button>
+                    </div>
+                </div>
+                <div style="border-top: 1px solid var(--glass-border); padding-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 600;">Total Bill:</span>
+                    <span style="font-size: 1.5rem; color: var(--accent); font-weight: 900;">${currentProduct.total} PKR</span>
+                </div>
+            `;
+        }
+
+        function changeQty(delta) {
+            currentProduct.qty = Math.max(1, currentProduct.qty + delta);
+            currentProduct.total = currentProduct.price * currentProduct.qty;
+            updateOrderSummary();
+        }
+
+        document.getElementById('confirm-order').addEventListener('click', async () => {
+            const name = document.getElementById('order_name').value;
+            const phone = document.getElementById('order_phone').value;
+
+            if (!name || !phone) {
+                alert('Please enter your name and phone number.');
+                return;
+            }
+
+            try {
+                const { error } = await supabaseClient
+                    .from('orders')
+                    .insert([{
+                        member_name: name,
+                        member_phone: phone,
+                        product_id: currentProduct.id,
+                        quantity: currentProduct.qty,
+                        total_price: currentProduct.total,
+                        status: 'pending'
+                    }]);
+
+                if (error) throw error;
+
+                const message = `*NEW ORDER - GERMAN FITNESS*\n\n` +
+                    `*Customer:* ${name}\n` +
+                    `*Phone:* ${phone}\n` +
+                    `*Product:* ${currentProduct.name}\n` +
+                    `*Quantity:* ${currentProduct.qty} Units\n` +
+                    `*Total Price:* ${currentProduct.total} PKR\n\n` +
+                    `_Please process this order._`;
+
+                const whatsappUrl = `https://wa.me/923009692474?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank');
+                
+                document.getElementById('purchase-modal').style.display = 'none';
+                document.getElementById('order_name').value = '';
+                document.getElementById('order_phone').value = '';
+
+            } catch (error) {
+                console.error('Error placing order:', error);
+                alert('Error placing order. Please try again.');
+            }
+        });
+
+        document.getElementById('close-purchase-modal').addEventListener('click', () => {
+            document.getElementById('purchase-modal').style.display = 'none';
+        });
+
+        document.addEventListener('DOMContentLoaded', loadProducts);
+    </script>
+</body>
+</html>

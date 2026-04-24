@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>German Fitness & Sports | Best Gym In Sahiwal</title>
+    <meta name="description" content="Join Sahiwal’s most trusted fitness destination. Expert-led weight loss, muscle building, physiotherapy, and personal training.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">GERMAN <span>FITNESS</span></div>
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#store">Store</a></li>
+            <li><a href="#blogs">Blogs</a></li>
+            <li><a href="#reviews">Reviews</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="admin.html" class="nav-admin">Admin</a></li>
+        </ul>
+        <a href="#join" class="btn btn-primary nav-join">Join Now</a>
+    </nav>
+
+    <header id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-badge" style="margin-bottom: 1.5rem; position: static; transform: none;">BEST IN SAHIWAL</div>
+            <div class="hero-text-card">
+                <h1 class="reveal-text">NO PAIN <br> <span class="text-accent">NO GAIN</span></h1>
+                <p>Ready to transform your body? Join Sahiwal's most elite fitness training center today. Expert coaching, premium equipment, and a results-driven environment.</p>
+                <div class="hero-btns">
+                    <a href="#join" class="btn btn-primary">Start Your Journey</a>
+                    <a href="#services" class="btn btn-outline">Explore Programs</a>
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat-item">
+                    <h3>13k+</h3>
+                    <p>Members</p>
+                </div>
+                <div class="stat-item">
+                    <h3>70+</h3>
+                    <p>Expert Trainers</p>
+                </div>
+                <div class="stat-item">
+                    <h3>15+</h3>
+                    <p>Years Excellence</p>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="assets/hero-athlete.png" alt="Athlete Training">
+        </div>
+    </header>
+
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="text-accent glass-heading">OUR SERVICES</h2>
+                <h3>Push Past Your Limits</h3>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🏋️‍♂️</div>
+                    <h4>Strength Training</h4>
+                    <p>Build muscle with our modern free weights and machines.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">⚡</div>
+                    <h4>Cardio Workouts</h4>
+                    <p>Boost endurance with treadmills, ellipticals, and bikes.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">👥</div>
+                    <h4>Group Classes</h4>
+                    <p>HIIT, Yoga, and Zumba sessions led by experts.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🛡️</div>
+                    <h4>Ladies Only</h4>
+                    <p>Private, secure environment led by Dr. Hafsa.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">👤</div>
+                    <h4>Personal Training</h4>
+                    <p>1-on-1 coaching customized for your body.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🛍️</div>
+                    <h4>Gym Store</h4>
+                    <p>Purchase top-tier supplements and equipment.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="store" class="hot-selling">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="text-accent glass-heading">HOT SELLING</h2>
+                <h3>Premium Supplements</h3>
+            </div>
+            <div class="products-grid" id="hot-selling-products">
+                <!-- Products will be loaded via JS -->
+            </div>
+            <div class="text-center">
+                <a href="store.html" class="btn btn-outline">Go To Store</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="reviews" class="reviews">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="text-accent glass-heading">REVIEWS</h2>
+                <h3>What Our Members Say</h3>
+            </div>
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">A</div>
+                        <div class="review-info">
+                            <h4>Ali Khan</h4>
+                            <div class="review-rating">★★★★★</div>
+                        </div>
+                    </div>
+                    <p class="review-text">"Best gym in Sahiwal! The environment is very professional and the equipment is top-notch."</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">S</div>
+                        <div class="review-info">
+                            <h4>Sana Ahmed</h4>
+                            <div class="review-rating">★★★★★</div>
+                        </div>
+                    </div>
+                    <p class="review-text">"The ladies' section is very comfortable and private. The trainers are very helpful."</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">U</div>
+                        <div class="review-info">
+                            <h4>Usman Sheikh</h4>
+                            <div class="review-rating">★★★★★</div>
+                        </div>
+                    </div>
+                    <p class="review-text">"Lost 10kg in 3 months thanks to the personal training sessions. Very effective diet plans."</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">M</div>
+                        <div class="review-info">
+                            <h4>M. Rizwan</h4>
+                            <div class="review-rating">★★★★★</div>
+                        </div>
+                    </div>
+                    <p class="review-text">"State of the art machinery and very cooperative staff. Energetic and motivating atmosphere."</p>
+                </div>
+            </div>
+            <div class="text-center" style="margin-top: 3rem;">
+                <a href="reviews.html" class="btn btn-outline">View All Reviews</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="join" class="registration">
+        <div class="container">
+            <div class="registration-wrapper">
+                <div class="registration-info">
+                    <h2 class="glass-heading">Become A Member</h2>
+                    <p>Select your preferred packages and start your transformation today. After submitting, send your payment screenshot to our WhatsApp for manual verification.</p>
+                </div>
+                <form id="membership-form" class="registration-form">
+                    <div class="form-group">
+                        <label for="full_name">Full Name</label>
+                        <input type="text" id="full_name" required placeholder="Enter your name">
+                    </div>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender" required>
+                                <option value="" disabled selected>Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" required placeholder="+92 300 0000000">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="join_date">Preferred Start Date</label>
+                        <input type="date" id="join_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Packages</label>
+                        <div class="package-options">
+                            <label class="package-item">
+                                <input type="checkbox" name="package" value="gym" data-price="2000">
+                                <span class="package-name">Gym Membership (Monthly)</span>
+                                <span class="package-price">2000 PKR</span>
+                            </label>
+                            <label class="package-item">
+                                <input type="checkbox" name="package" value="physio" data-price="5000">
+                                <span class="package-name">Physiotherapy</span>
+                                <span class="package-price">5000 PKR</span>
+                            </label>
+                            <label class="package-item">
+                                <input type="checkbox" name="package" value="pt" data-price="8000">
+                                <span class="package-name">Personal Trainer</span>
+                                <span class="package-price">8000 PKR</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="payment-selector" style="margin-top: 2rem;">
+                        <p style="margin-bottom: 1rem; font-weight: 600;">Choose Payment Method:</p>
+                        <div class="payment-methods">
+                            <button type="button" class="payment-btn" data-method="jazzcash">JazzCash</button>
+                            <button type="button" class="payment-btn" data-method="easypaisa">EasyPaisa</button>
+                            <button type="button" class="payment-btn" data-method="bank">Bank Transfer</button>
+                        </div>
+                        <div id="payment-details" class="payment-details-box" style="display: none; margin-top: 1.5rem;">
+                            <!-- Details will be injected by JS -->
+                        </div>
+                    </div>
+
+                    <div class="total-bill">
+                        Total Bill: <span id="bill-amount">0</span> PKR
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Submit & WhatsApp</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section id="blogs" class="blogs">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="text-accent glass-heading">LATEST BLOGS</h2>
+                <h3>Fitness Tips & News</h3>
+            </div>
+            <div class="blogs-grid">
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=500&q=80" alt="Muscle Gain">
+                    </div>
+                    <div class="blog-content">
+                        <span class="blog-date">Oct 12, 2026</span>
+                        <h4>5 Essential Tips for Rapid Muscle Gain</h4>
+                        <p>Consistency, protein intake, and progressive overload are the keys to building muscle...</p>
+                        <a href="blog.html?id=1" class="read-more">Read More →</a>
+                    </div>
+                </article>
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1518611012118-29a97d9ced4a?w=500&q=80" alt="Cardio Training">
+                    </div>
+                    <div class="blog-content">
+                        <span class="blog-date">Oct 10, 2026</span>
+                        <h4>Why Cardio is More Than Just Weight Loss</h4>
+                        <p>Exploring the cardiovascular benefits of regular aerobic exercise for long-term health...</p>
+                        <a href="blog.html?id=2" class="read-more">Read More →</a>
+                    </div>
+                </article>
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1517838276537-92292dc3bdc7?w=500&q=80" alt="Supplements">
+                    </div>
+                    <div class="blog-content">
+                        <span class="blog-date">Oct 05, 2026</span>
+                        <h4>The Truth About Fitness Supplements</h4>
+                        <p>Which supplements actually work and which ones are just a waste of your money?</p>
+                        <a href="blog.html?id=3" class="read-more">Read More →</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-info">
+                    <div class="logo">GERMAN <span>FITNESS</span></div>
+                    <p>68-A, Main Fateh Sher Road, Sahiwal.</p>
+                    <p>Phone: +92 300 9692474</p>
+                    <div class="social-links" style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                        <a href="https://facebook.com" class="social-link" target="_blank" style="color: var(--accent); font-size: 1.5rem;">FB</a>
+                        <a href="https://instagram.com" class="social-link" target="_blank" style="color: var(--accent); font-size: 1.5rem;">IG</a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="store.html">Store</a></li>
+                        <li><a href="#blogs">Blogs</a></li>
+                        <li><a href="#reviews">Reviews</a></li>
+                    </ul>
+                </div>
+                <div class="footer-hours">
+                    <h4>Opening Hours</h4>
+                    <p>Mon - Sat: 7:30 AM - 11:00 PM</p>
+                    <p>Sun: Closed</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 German Fitness & Sports. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <div id="confirmation-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2 class="text-accent">Confirm Registration</h2>
+            <div id="confirmation-details"></div>
+            <div class="modal-btns">
+                <button id="confirm-submit" class="btn btn-primary">Confirm & Send WhatsApp</button>
+                <button id="close-modal" class="btn btn-outline">Edit Info</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Purchase Modal for Home Page -->
+    <div id="purchase-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2 class="text-accent">Order Details</h2>
+            <div id="order-summary" style="margin-bottom: 2rem; padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: var(--radius); border: 1px solid var(--glass-border);"></div>
+            <div class="form-group">
+                <label for="order_name">Your Name</label>
+                <input type="text" id="order_name" required placeholder="Enter your name">
+            </div>
+            <div class="form-group">
+                <label for="order_phone">Phone Number</label>
+                <input type="tel" id="order_phone" required placeholder="+92 300 0000000">
+            </div>
+            <div class="modal-btns" style="margin-top: 2rem;">
+                <button id="confirm-order" class="btn btn-primary">Send Order to WhatsApp</button>
+                <button id="close-purchase-modal" class="btn btn-outline">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

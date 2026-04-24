@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Reviews | German Fitness & Sports</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .reviews-header {
+            padding: 10rem 0 5rem;
+            text-align: center;
+            background: linear-gradient(to bottom, #000, #0a0a0a);
+        }
+        .reviews-grid-full {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding-bottom: 5rem;
+        }
+        .review-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 2rem;
+            border-radius: var(--radius);
+            transition: transform 0.3s;
+        }
+        .review-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .review-avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        .review-info h4 { margin: 0; font-size: 1.1rem; }
+        .review-rating { color: #ffc107; font-size: 0.9rem; }
+        .review-text { color: var(--text-muted); line-height: 1.6; font-style: italic; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">GERMAN <span>FITNESS</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html#home">Home</a></li>
+            <li><a href="index.html#services">Services</a></li>
+            <li><a href="store.html">Store</a></li>
+            <li><a href="index.html#blogs">Blogs</a></li>
+            <li><a href="reviews.html" class="text-accent">Reviews</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+            <li><a href="admin.html" class="nav-admin">Admin</a></li>
+        </ul>
+        <a href="index.html#join" class="btn btn-primary">Join Now</a>
+    </nav>
+
+    <header class="reviews-header">
+        <div class="container">
+            <h1 class="text-accent">WHAT OUR MEMBERS SAY</h1>
+            <p>Real stories from our dedicated fitness community in Sahiwal.</p>
+        </div>
+    </header>
+
+    <section class="reviews-content">
+        <div class="container">
+            <div class="reviews-grid-full">
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">A</div>
+                        <div class="review-info">
+                            <h4>Ali Khan</h4>
+                            <div class="review-rating">★★★★★</div>
+                        </div>
+                    </div>
+                    <p class="review-text">"Best gym in Sahiwal! The environment is very professional and the equipment is top-notch. Highly recommended for serious fitness enthusiasts."</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">S</div>
+                        <div class="review-info">
+                            <h4>Sana Ahmed</h4>
+                            <div class="review-rating">★★★★★</div>
+                        </div>
+                    </div>
+                    <p class="review-text">"The ladies' section is very comfortable and private. The trainers are very helpful and the hygiene standards are excellent."</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">U</div>
+                        <div class="review-info">
+                            <h4>Usman Sheikh</h4>
+                            <div class="review-rating">★★★★★</div>
+                        </div>
+                    </div>
+                    <p class="review-text">"Lost 10kg in 3 months thanks to the personal training sessions. The diet plan was easy to follow and very effective."</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">M</div>
+                        <div class="review-info">
+                            <h4>M. Rizwan</h4>
+                            <div class="review-rating">★★★★★</div>
+                        </div>
+                    </div>
+                    <p class="review-text">"State of the art machinery and very cooperative staff. The atmosphere is very energetic and motivating."</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">H</div>
+                        <div class="review-info">
+                            <h4>Hammad Ali</h4>
+                            <div class="review-rating">★★★★★</div>
+                        </div>
+                    </div>
+                    <p class="review-text">"Great place for physiotherapy. The experts helped me recover from my back injury much faster than I expected."</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">F</div>
+                        <div class="review-info">
+                            <h4>Fatima Batool</h4>
+                            <div class="review-rating">★★★★★</div>
+                        </div>
+                    </div>
+                    <p class="review-text">"Cleanest gym I've ever visited. The staff is always cleaning the equipment. Safe and friendly environment for women."</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">Z</div>
+                        <div class="review-info">
+                            <h4>Zaid Hassan</h4>
+                            <div class="review-rating">★★★★★</div>
+                        </div>
+                    </div>
+                    <p class="review-text">"The cardio zone is massive and never feels crowded. Loving the new HIIT sessions in the morning!"</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">B</div>
+                        <div class="review-info">
+                            <h4>Bilal Jutt</h4>
+                            <div class="review-rating">★★★★★</div>
+                        </div>
+                    </div>
+                    <p class="review-text">"Joined last month and already seeing great results. The trainers really know their stuff."</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">K</div>
+                        <div class="review-info">
+                            <h4>Kiran Shahzadi</h4>
+                            <div class="review-rating">★★★★★</div>
+                        </div>
+                    </div>
+                    <p class="review-text">"Best decision I ever made for my health. The trainers are like family and push you to your limits."</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">A</div>
+                        <div class="review-info">
+                            <h4>Asim Raza</h4>
+                            <div class="review-rating">★★★★★</div>
+                        </div>
+                    </div>
+                    <p class="review-text">"Premium supplements available at the store are genuine and priced reasonably. The gym itself is elite."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                &copy; 2026 German Fitness & Sports. All rights reserved.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

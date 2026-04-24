@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog | German Fitness & Sports</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .blog-header {
+            padding: 10rem 0 5rem;
+            background: linear-gradient(to bottom, #000, #0a0a0a);
+        }
+        .blog-post-content {
+            padding-bottom: 10rem;
+        }
+        .post-meta {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        .post-title {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            color: #fff;
+        }
+        .post-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: var(--radius);
+            margin-bottom: 3rem;
+            border: 1px solid var(--glass-border);
+        }
+        .post-body {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .post-body p { margin-bottom: 1.5rem; }
+        .post-body h2 { color: var(--accent); margin: 2.5rem 0 1rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">GERMAN <span>FITNESS</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html#home">Home</a></li>
+            <li><a href="index.html#services">Services</a></li>
+            <li><a href="store.html">Store</a></li>
+            <li><a href="index.html#blogs" class="text-accent">Blogs</a></li>
+            <li><a href="index.html#reviews">Reviews</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <a href="index.html#join" class="btn btn-primary">Join Now</a>
+    </nav>
+
+    <div id="blog-container">
+        <!-- Content loaded by JS -->
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                &copy; 2026 German Fitness & Sports. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const blogPosts = {
+            1: {
+                title: "5 Essential Tips for Rapid Muscle Gain",
+                date: "Oct 12, 2026",
+                image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1200&q=80",
+                content: `
+                    <p>Building muscle is not just about lifting heavy weights. It requires a strategic approach that combines training, nutrition, and recovery. Here are 5 essential tips to help you gain muscle faster and more effectively.</p>
+                    <h2>1. Prioritize Progressive Overload</h2>
+                    <p>To grow, your muscles need to be consistently challenged. Progressive overload means gradually increasing the weight, frequency, or number of repetitions in your strength training routine.</p>
+                    <h2>2. Increase Protein Intake</h2>
+                    <p>Protein is the building block of muscle. Aim for at least 1.6 to 2.2 grams of protein per kilogram of body weight daily. Good sources include lean meats, eggs, dairy, and high-quality supplements available in our store.</p>
+                    <h2>3. Focus on Compound Movements</h2>
+                    <p>Exercises like squats, deadlifts, bench presses, and rows engage multiple muscle groups at once, allowing you to lift heavier weights and stimulate more growth.</p>
+                    <h2>4. Don't Skip Sleep</h2>
+                    <p>Muscles don't grow in the gym; they grow while you sleep. Aim for 7-9 hours of quality sleep to allow your body to repair tissues and release growth hormones.</p>
+                    <h2>5. Stay Consistent</h2>
+                    <p>Transformation doesn't happen overnight. Stick to your plan, even on days when motivation is low. Our trainers at German Fitness are here to keep you on track!</p>
+                `
+            },
+            2: {
+                title: "Why Cardio is More Than Just Weight Loss",
+                date: "Oct 10, 2026",
+                image: "https://images.unsplash.com/photo-1518611012118-29a97d9ced4a?w=1200&q=80",
+                content: `
+                    <p>Many people view cardio as a "necessary evil" for burning calories, but its benefits extend far beyond weight loss. Cardiovascular health is the foundation of long-term fitness.</p>
+                    <h2>1. Heart Health</h2>
+                    <p>Regular cardio strengthens the heart, allowing it to pump blood more efficiently. This lowers resting heart rate and reduces the risk of heart disease.</p>
+                    <h2>2. Improved Recovery</h2>
+                    <p>Light cardio (like walking or cycling) increases blood flow to muscles, which can help clear metabolic waste and reduce soreness after heavy lifting sessions.</p>
+                    <h2>3. Mental Clarity</h2>
+                    <p>Cardio releases endorphins, the body's natural "feel-good" chemicals. It’s an effective tool for reducing stress, anxiety, and improving overall mood.</p>
+                    <h2>4. Lung Capacity</h2>
+                    <p>Consistent aerobic exercise improves the efficiency with which your body uses oxygen, making everyday tasks feel easier and boosting your stamina in the gym.</p>
+                `
+            },
+            3: {
+                title: "The Truth About Fitness Supplements",
+                date: "Oct 05, 2026",
+                image: "https://images.unsplash.com/photo-1517838276537-92292dc3bdc7?w=1200&q=80",
+                content: `
+                    <p>The supplement industry is full of promises. But which products actually deliver results? We break down the essentials that every athlete should consider.</p>
+                    <h2>1. Whey Protein</h2>
+                    <p>Whey is the gold standard for post-workout recovery. It's quickly absorbed and provides all essential amino acids needed for muscle repair.</p>
+                    <h2>2. Creatine Monohydrate</h2>
+                    <p>One of the most researched supplements in the world. Creatine helps increase power output, strength, and muscle volume by replenishing ATP stores.</p>
+                    <h2>3. Pre-Workout</h2>
+                    <p>A good pre-workout can improve focus and energy. Look for ingredients like Caffeine for energy, Beta-Alanine for endurance, and L-Citrulline for better pumps.</p>
+                    <h2>4. Multivitamins</h2>
+                    <p>Hard training increases the body's demand for micronutrients. A high-quality multivitamin ensures your body has the vitamins and minerals it needs to function optimally.</p>
+                    <p>Check out our store for the highest quality, genuine supplements in Sahiwal!</p>
+                `
+            }
+        };
+
+        function loadPost() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id') || 1;
+            const post = blogPosts[id];
+            const container = document.getElementById('blog-container');
+
+            if (!post) {
+                container.innerHTML = `<div class="container"><h1 class="text-accent">Post Not Found</h1><a href="index.html#blogs" class="btn btn-primary">Back to Home</a></div>`;
+                return;
+            }
+
+            container.innerHTML = `
+                <header class="blog-header">
+                    <div class="container">
+                        <span class="post-meta">${post.date}</span>
+                        <h1 class="post-title">${post.title}</h1>
+                    </div>
+                </header>
+                <section class="blog-post-content">
+                    <div class="container">
+                        <img src="${post.image}" class="post-image" alt="${post.title}">
+                        <div class="post-body glass-card" style="padding: 3rem; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: var(--radius);">
+                            ${post.content}
+                        </div>
+                        <div class="text-center" style="margin-top: 5rem;">
+                            <a href="index.html#blogs" class="btn btn-outline">Back to All Blogs</a>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        window.onload = loadPost;
+    </script>
+</body>
+</html>
