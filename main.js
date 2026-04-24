@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     `_I am sending the payment screenshot for verification._`;
 
                 const whatsappUrl = `https://wa.me/923009692474?text=${encodeURIComponent(message)}`;
-                window.open(whatsappUrl, '_blank');
+                window.location.href = whatsappUrl;
                 modal.style.display = 'none';
                 membershipForm.reset();
                 billAmountEl.textContent = '0';
@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     `_Please process this order._`;
 
                 const whatsappUrl = `https://wa.me/923009692474?text=${encodeURIComponent(message)}`;
-                window.open(whatsappUrl, '_blank');
+                window.location.href = whatsappUrl;
                 
                 purchaseModal.style.display = 'none';
                 document.getElementById('order_name').value = '';
