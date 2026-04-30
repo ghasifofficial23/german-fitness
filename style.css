@@ -5,14 +5,14 @@
     --text: #ffffff;
     --text-muted: #a1a1aa;
     --bg-dark: #050505;
-    --glass: rgba(255, 255, 255, 0.03);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-blur: blur(12px);
+    --glass: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --glass-blur: blur(20px);
     --radius: 16px;
     --font-heading: 'Outfit', sans-serif;
     --font-body: 'Inter', sans-serif;
-    --grad-dark: radial-gradient(circle at top right, rgba(204, 255, 0, 0.08), transparent 40%),
-                 radial-gradient(circle at bottom left, rgba(204, 255, 0, 0.08), transparent 40%),
+    --grad-dark: radial-gradient(circle at 80% 20%, rgba(204, 255, 0, 0.12), transparent 45%),
+                 radial-gradient(circle at 20% 80%, rgba(204, 255, 0, 0.08), transparent 45%),
                  linear-gradient(135deg, #0a0c00 0%, #000000 50%, #050505 100%);
 }
 
@@ -50,11 +50,13 @@ h1, h2, h3, h4 {
 
 .glass-heading {
     backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     background: var(--glass);
     border: 1px solid var(--glass-border);
-    padding: 0.5rem 1.5rem;
+    padding: 0.6rem 1.8rem;
     border-radius: 50px;
     display: inline-block;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 .text-accent {
@@ -313,11 +315,26 @@ h1, h2, h3, h4 {
     align-items: center;
     justify-content: space-between;
     padding: 0 8%;
-    background: radial-gradient(circle at 80% 20%, rgba(204, 255, 0, 0.08), transparent 40%),
-                radial-gradient(circle at 20% 80%, rgba(204, 255, 0, 0.05), transparent 40%);
+    background: radial-gradient(circle at 80% 20%, rgba(204, 255, 0, 0.1), transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(204, 255, 0, 0.07), transparent 50%),
+                var(--grad-dark);
     position: relative;
     overflow: hidden;
     padding-top: 100px;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(204, 255, 0, 0.03) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 1;
 }
 
 @media (max-width: 992px) {
@@ -378,6 +395,12 @@ h1, h2, h3, h4 {
     margin-bottom: 1.5rem;
     font-weight: 900;
     letter-spacing: -2px;
+    animation: slideUp 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .hero p {
@@ -585,22 +608,21 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .package-item {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    display: flex;
     align-items: center;
     gap: 1.5rem;
     cursor: pointer;
     padding: 1.25rem 1.5rem;
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(255, 255, 255, 0.03);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .package-item:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.08);
     border-color: var(--accent);
-    transform: translateX(5px);
+    transform: scale(1.01);
 }
 
 .package-item input {
@@ -619,6 +641,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     color: var(--accent);
     font-weight: 700;
     font-family: var(--font-heading);
+    margin-left: auto;
 }
 
 .total-bill {
@@ -650,6 +673,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     border-radius: var(--radius);
     overflow: hidden;
     transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
 }
 
 .product-card:hover {
@@ -671,6 +696,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .product-info {
     padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .product-info h4 {
@@ -685,6 +713,55 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: auto;
+}
+
+/* Apple Qty Selector */
+.apple-qty {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 50px;
+    padding: 2px;
+    overflow: hidden;
+}
+
+.qty-btn {
+    background: transparent;
+    border: none;
+    color: var(--text);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background 0.2s;
+    border-radius: 50%;
+}
+
+.qty-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.qty-input {
+    background: transparent;
+    border: none;
+    color: var(--text);
+    width: 35px;
+    text-align: center;
+    font-weight: 600;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    -moz-appearance: textfield;
+}
+
+.qty-input::-webkit-outer-spin-button,
+.qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .out-of-stock {
@@ -1019,3 +1096,146 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         display: none;
     }
 }
+
+/* --- Cart UI Styles --- */
+.cart-toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--accent);
+    color: var(--primary);
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    font-weight: 700;
+    z-index: 9999;
+    transform: translateY(100px);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 30px rgba(204, 255, 0, 0.3);
+}
+.cart-toast.show {
+    transform: translateY(0);
+}
+
+.floating-cart {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: var(--accent);
+    color: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    border: none;
+}
+.floating-cart:hover {
+    transform: scale(1.1);
+}
+.cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #fff;
+    color: #000;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-sidebar {
+    position: fixed;
+    top: 0;
+    right: -450px;
+    width: 400px;
+    height: 100vh;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    border-left: 1px solid var(--glass-border);
+    z-index: 1001;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+}
+.cart-sidebar.active {
+    right: 0;
+}
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+.cart-items {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 2rem;
+}
+.cart-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--glass-border);
+}
+.cart-item-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+    object-fit: cover;
+    background: var(--glass);
+}
+.cart-item-info {
+    flex: 1;
+}
+.cart-item-info h5 {
+    margin: 0 0 0.3rem 0;
+    font-size: 1rem;
+}
+.cart-item-price {
+    color: var(--accent);
+    font-weight: 700;
+}
+.cart-footer {
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--glass-border);
+}
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+}
+.cart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    display: none;
+}
+.cart-overlay.active {
+    display: block;
+}
+
+@media (max-width: 480px) {
+    .cart-sidebar {
+        width: 100%;
+        right: -100%;
+    }
+}
+

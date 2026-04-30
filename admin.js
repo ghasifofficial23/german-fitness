@@ -1,6 +1,4 @@
-const SUPABASE_URL = 'https://kpgzuapbllzhatakkcts.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_fL8D4BepEkupdCNsnMaW1Q_E76Za12D';
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabaseClient = window.supabaseClient;
 
 // State
 let allMembers = [];

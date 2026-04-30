@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | German Fitness & Sports</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="cart.js"></script>
+    <style>
+        .checkout-container {
+            padding: 10rem 0 5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 3rem;
+        }
+        @media (max-width: 992px) {
+            .checkout-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .checkout-container {
+                padding: 8rem 0 3rem;
+            }
+        }
+        .checkout-section {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            margin-bottom: 2rem;
+        }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 1rem;
+        }
+        .payment-option:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: var(--accent);
+        }
+        .payment-option.active {
+            border-color: var(--accent);
+            background: rgba(204, 255, 0, 0.05);
+        }
+        .payment-option input {
+            display: none;
+        }
+        .payment-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+        @media (max-width: 992px) {
+            .checkout-summary-side .checkout-section {
+                position: static !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo" onclick="window.location.href='index.html'" style="cursor: pointer;">
+            <div class="logo-icon">✕</div>
+            GERMAN <span>FITNESS</span>
+        </div>
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html#home">Home</a></li>
+            <li><a href="index.html#services">Services</a></li>
+            <li><a href="store.html" class="text-accent">Store</a></li>
+            <li><a href="index.html#blogs">Blogs</a></li>
+            <li><a href="index.html#reviews">Reviews</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+            <li><a href="admin.html" class="nav-admin">Admin</a></li>
+        </ul>
+        <a href="index.html#join" class="btn btn-primary nav-join">Join Now</a>
+    </nav>
+
+    <div class="checkout-container container">
+        <h1 class="text-accent" style="margin-bottom: 3rem;">COMPLETE YOUR ORDER</h1>
+        
+        <div class="checkout-grid">
+            <div class="checkout-form-side">
+                <div class="checkout-section">
+                    <h3 style="margin-bottom: 2rem;">Shipping Details</h3>
+                    <form id="checkout-form">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="full_name" required placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="email" required placeholder="john@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" id="phone" required placeholder="+92 300 0000000">
+                        </div>
+                        <div class="form-group">
+                            <label>Shipping Address</label>
+                            <input type="text" id="address" required placeholder="Enter your full delivery address">
+                        </div>
+                        <div class="form-group">
+                            <label>Postal Code</label>
+                            <input type="text" id="postal_code" required placeholder="e.g., 54000">
+                        </div>
+                    </form>
+                </div>
+
+                <div class="checkout-section">
+                    <h3 style="margin-bottom: 2rem;">Payment Method</h3>
+                    <div class="payment-option active" onclick="selectPayment(event, 'jazzcash')">
+                        <div class="payment-icon">JC</div>
+                        <div>
+                            <div style="font-weight: 700;">JazzCash Online</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Pay securely via JazzCash App or Card</div>
+                        </div>
+                        <input type="radio" name="payment_method" value="jazzcash" checked>
+                    </div>
+                    <div class="payment-option" onclick="selectPayment(event, 'cod')">
+                        <div class="payment-icon">WA</div>
+                        <div>
+                            <div style="font-weight: 700;">Order on WhatsApp (COD)</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Confirm order via WhatsApp messaging</div>
+                        </div>
+                        <input type="radio" name="payment_method" value="cod">
+                    </div>
+                </div>
+            </div>
+
+            <div class="checkout-summary-side">
+                <div class="checkout-section" style="position: sticky; top: 100px;">
+                    <h3 style="margin-bottom: 2rem;">Order Summary</h3>
+                    <div id="checkout-items">
+                        <!-- Items injected by JS -->
+                    </div>
+                    <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 2px solid var(--glass-border);">
+                        <div class="summary-item" style="font-weight: 800; font-size: 1.3rem; border: none;">
+                            <span>Total</span>
+                            <span class="text-accent" id="summary-total">0 PKR</span>
+                        </div>
+                    </div>
+                    <button id="place-order-btn" class="btn btn-primary btn-block" style="margin-top: 2rem; padding: 1.2rem;">
+                        PLACE ORDER NOW
+                    </button>
+                    <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">
+                        Secure SSL Encrypted Checkout
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden JazzCash Form -->
+    <form id="jazzcash-form" method="post" action="https://sandbox.jazzcash.com.pk/CustomerPortal/transactionmanagement/merchantform/">
+        <!-- Fields will be dynamically injected -->
+    </form>
+
+    <script>
+        const supabaseClient = window.supabaseClient;
+        let selectedPaymentMethod = 'jazzcash';
+
+        function selectPayment(e, method) {
+            selectedPaymentMethod = method;
+            document.querySelectorAll('.payment-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            e.currentTarget.classList.add('active');
+        }
+
+        function renderSummary() {
+            const items = cartManager.getItems();
+            const container = document.getElementById('checkout-items');
+            const total = document.getElementById('summary-total');
+
+            if (items.length === 0) {
+                window.location.href = 'store.html';
+                return;
+            }
+
+            container.innerHTML = items.map(item => `
+                <div class="summary-item">
+                    <span>${item.name} x ${item.quantity}</span>
+                    <span>${item.price * item.quantity} PKR</span>
+                </div>
+            `).join('');
+
+            total.innerText = `${cartManager.getCartTotal()} PKR`;
+        }
+
+        document.getElementById('place-order-btn').addEventListener('click', async () => {
+            const name = document.getElementById('full_name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            const postalCode = document.getElementById('postal_code').value;
+
+            if (!name || !email || !phone || !address || !postalCode) {
+                alert('Please fill all shipping details.');
+                return;
+            }
+
+            const btn = document.getElementById('place-order-btn');
+            btn.disabled = true;
+            btn.innerText = 'PROCESSING...';
+
+            try {
+                // 1. Create Order
+                const { data: order, error: orderError } = await supabaseClient
+                    .from('orders')
+                    .insert([{
+                        member_name: name,
+                        member_email: email,
+                        member_phone: phone,
+                        shipping_address: address,
+                        postal_code: postalCode,
+                        total_price: cartManager.getCartTotal(),
+                        status: 'pending',
+                        payment_method: selectedPaymentMethod
+                    }])
+                    .select()
+                    .single();
+
+                if (orderError) throw orderError;
+
+                // 2. Create Order Items
+                const orderItems = cartManager.getItems().map(item => ({
+                    order_id: order.id,
+                    product_id: item.id,
+                    quantity: item.quantity,
+                    price_at_purchase: item.price
+                }));
+
+                const { error: itemsError } = await supabaseClient
+                    .from('order_items')
+                    .insert(orderItems);
+
+                if (itemsError) throw itemsError;
+
+                // 3. Handle Payment
+                if (selectedPaymentMethod === 'jazzcash') {
+                    btn.innerText = 'CONNECTING TO JAZZCASH...';
+                    
+                    const response = await fetch(`${CONFIG.SUPABASE_URL}/functions/v1/jazzcash-initiate`, {
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${CONFIG.SUPABASE_KEY}`
+                        },
+                        body: JSON.stringify({
+                            orderId: order.id,
+                            amount: cartManager.getCartTotal()
+                        })
+                    });
+
+                    const payload = await response.json();
+                    if (payload.error) throw new Error(payload.error);
+
+                    // Inject payload into hidden form and submit
+                    const form = document.getElementById('jazzcash-form');
+                    form.innerHTML = Object.entries(payload).map(([key, value]) => 
+                        `<input type="hidden" name="${key}" value="${value}">`
+                    ).join('');
+                    
+                    cartManager.clearCart();
+                    form.submit();
+                } else {
+                    // WhatsApp / COD
+                    const message = `*NEW ORDER - GERMAN FITNESS*\n\n` +
+                        `*Order ID:* ${order.id}\n` +
+                        `*Customer:* ${name}\n` +
+                        `*Phone:* ${phone}\n` +
+                        `*Address:* ${address}\n\n` +
+                        `*Items:*\n` + 
+                        cartManager.getItems().map(i => `- ${i.name} (x${i.quantity})`).join('\n') +
+                        `\n\n*Total:* ${cartManager.getCartTotal()} PKR\n` +
+                        `*Payment:* Cash on Delivery`;
+
+                    const whatsappUrl = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+                    window.open(whatsappUrl, '_blank');
+                    
+                    cartManager.clearCart();
+                    alert('Order placed successfully! Redirecting to WhatsApp for confirmation.');
+                    window.location.href = 'index.html';
+                }
+
+            } catch (error) {
+                console.error('Checkout Detailed Error:', error);
+                alert('Error placing order: ' + (error.message || 'Unknown error'));
+                btn.disabled = false;
+                btn.innerText = 'PLACE ORDER NOW';
+            }
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+        if (mobileMenu && navLinks) {
+            mobileMenu.addEventListener('click', () => {
+                mobileMenu.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', renderSummary);
+    </script>
+</body>
+</html>

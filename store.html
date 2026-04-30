@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="cart.js"></script>
     <style>
         .store-header {
             padding: 10rem 0 5rem;
@@ -46,7 +48,10 @@
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo">GERMAN <span>FITNESS</span></div>
+        <div class="logo" onclick="window.location.href='index.html'" style="cursor: pointer;">
+            <div class="logo-icon">✕</div>
+            GERMAN <span>FITNESS</span>
+        </div>
         <div class="menu-toggle" id="mobile-menu">
             <span class="bar"></span>
             <span class="bar"></span>
@@ -66,23 +71,49 @@
 
     <header class="store-header">
         <div class="container">
-            <h1 class="text-accent">SUPPLEMENT STORE</h1>
-            <p>Premium quality supplements for your fitness goals.</p>
+            <h1 class="text-accent">STORE</h1>
+            <p>Premium quality supplements and top-tier gym equipment.</p>
         </div>
     </header>
 
     <section class="store-content">
         <div class="container">
-            <div class="store-filters">
-                <button class="filter-btn active" data-filter="all">All Products</button>
+            <div class="store-filters" style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem;">
+                <button class="filter-btn active" data-filter="all">All</button>
                 <button class="filter-btn" data-filter="protein">Protein</button>
                 <button class="filter-btn" data-filter="preworkout">Pre-Workout</button>
+                <button class="filter-btn" data-filter="equipment">Equipment</button>
             </div>
             <div class="products-grid" id="all-products">
                 <!-- Products will be loaded via JS -->
             </div>
         </div>
     </section>
+
+    <!-- Cart UI -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Shopping Cart</h3>
+            <button class="btn btn-outline" id="close-cart" style="padding: 0.5rem;">✕</button>
+        </div>
+        <div class="cart-items" id="cart-items-container">
+            <!-- Items injected by JS -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total Bill:</span>
+                <span id="cart-total-amount">0 PKR</span>
+            </div>
+            <button id="checkout-btn" class="btn btn-primary btn-block">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Floating Cart Button -->
+    <button class="floating-cart" id="open-cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <div class="cart-badge" id="cart-count-badge">0</div>
+    </button>
 
     <div id="purchase-modal" class="modal" style="display: none;">
         <div class="modal-content">
@@ -114,9 +145,7 @@
     </footer>
 
     <script>
-        const SUPABASE_URL = 'https://kpgzuapbllzhatakkcts.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_fL8D4BepEkupdCNsnMaW1Q_E76Za12D';
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const supabaseClient = window.supabaseClient;
 
         let currentProduct = null;
 
@@ -128,19 +157,35 @@
             navLinks.classList.toggle('active');
         });
 
+        let allProducts = [];
+
         async function loadProducts() {
-            const productsContainer = document.getElementById('all-products');
-            
             try {
                 const { data: products, error } = await supabaseClient
                     .from('products')
                     .select('*');
 
                 if (error) throw error;
+                
+                allProducts = products;
+                renderProducts(allProducts);
 
-                productsContainer.innerHTML = products.map(product => {
-                    const isOutOfStock = product.stock <= 0;
-                    return `
+            } catch (error) {
+                console.error('Error loading products:', error);
+            }
+        }
+
+        function renderProducts(productsToRender) {
+            const productsContainer = document.getElementById('all-products');
+            
+            if (productsToRender.length === 0) {
+                productsContainer.innerHTML = '<p style="text-align: center; grid-column: 1 / -1; color: var(--text-muted);">No products found in this category.</p>';
+                return;
+            }
+
+            productsContainer.innerHTML = productsToRender.map(product => {
+                const isOutOfStock = product.stock <= 0;
+                return `
                         <div class="product-card" style="${isOutOfStock ? 'opacity: 0.7;' : ''}">
                             <div class="product-image">
                                 <img src="${product.image_url}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/200?text=Product'">
@@ -151,104 +196,112 @@
                                     <span>${product.price} PKR</span>
                                     ${isOutOfStock ? '<span class="out-of-stock">Out of Stock</span>' : ''}
                                 </p>
-                                <button onclick="${isOutOfStock ? '' : `openPurchaseModal('${product.id}', '${product.name}', ${product.price})`}" 
+                                <div class="quantity-selector" style="margin: 1rem 0; display: flex; align-items: center; gap: 1rem; ${isOutOfStock ? 'display: none;' : ''}">
+                                    <span style="font-size: 0.9rem; color: var(--text-muted);">Qty:</span>
+                                    <div class="apple-qty">
+                                        <button class="qty-btn" onclick="const q=document.getElementById('qty-${product.id}'); if(q.value>1) q.value--;">-</button>
+                                        <input type="number" value="1" min="1" id="qty-${product.id}" class="qty-input" readonly>
+                                        <button class="qty-btn" onclick="const q=document.getElementById('qty-${product.id}'); q.value++;">+</button>
+                                    </div>
+                                </div>
+                                <button onclick="${isOutOfStock ? '' : `addToCartHandler('${product.id}', '${product.name}', ${product.price}, '${product.image_url}')`}" 
                                         class="btn btn-primary btn-block" 
                                         style="margin-top: 1rem; ${isOutOfStock ? 'background: #333; cursor: not-allowed; color: #777;' : ''}"
                                         ${isOutOfStock ? 'disabled' : ''}>
-                                    ${isOutOfStock ? 'Sold Out' : 'Buy Now'}
+                                    ${isOutOfStock ? 'Sold Out' : 'Add to Cart'}
                                 </button>
                             </div>
                         </div>
                     `;
-                }).join('');
-
-            } catch (error) {
-                console.error('Error loading products:', error);
-            }
+            }).join('');
         }
 
-        function openPurchaseModal(id, name, price) {
-            currentProduct = { id, name, price, qty: 1, total: price };
-            updateOrderSummary();
-            document.getElementById('purchase-modal').style.display = 'flex';
+        // Filter Logic
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                
+                const filter = e.target.getAttribute('data-filter');
+                if (filter === 'all') {
+                    renderProducts(allProducts);
+                } else {
+                    const filtered = allProducts.filter(p => p.category && p.category.toLowerCase() === filter.toLowerCase());
+                    renderProducts(filtered);
+                }
+            });
+        });
+
+        // Cart Handlers
+        function addToCartHandler(id, name, price, image_url) {
+            const qtyInput = document.getElementById(`qty-${id}`);
+            const qty = qtyInput ? parseInt(qtyInput.value) : 1;
+            cartManager.addToCart({ id, name, price, image_url, quantity: qty });
         }
 
-        function updateOrderSummary() {
-            document.getElementById('order-summary').innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <strong style="font-size: 1.2rem;">${currentProduct.name}</strong>
-                    <span style="color: var(--accent); font-weight: 700;">${currentProduct.price} PKR</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-                    <span>Quantity:</span>
-                    <div style="display: flex; align-items: center; background: var(--glass); border-radius: 5px; border: 1px solid var(--glass-border);">
-                        <button onclick="changeQty(-1)" style="padding: 0.5rem 1rem; background: none; border: none; color: #fff; cursor: pointer;">-</button>
-                        <span id="modal-qty" style="width: 30px; text-align: center; font-weight: 700;">${currentProduct.qty}</span>
-                        <button onclick="changeQty(1)" style="padding: 0.5rem 1rem; background: none; border: none; color: #fff; cursor: pointer;">+</button>
-                    </div>
-                </div>
-                <div style="border-top: 1px solid var(--glass-border); padding-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-weight: 600;">Total Bill:</span>
-                    <span style="font-size: 1.5rem; color: var(--accent); font-weight: 900;">${currentProduct.total} PKR</span>
-                </div>
-            `;
-        }
+        function updateCartUI() {
+            const items = cartManager.getItems();
+            const container = document.getElementById('cart-items-container');
+            const totalAmount = document.getElementById('cart-total-amount');
+            const badge = document.getElementById('cart-count-badge');
 
-        function changeQty(delta) {
-            currentProduct.qty = Math.max(1, currentProduct.qty + delta);
-            currentProduct.total = currentProduct.price * currentProduct.qty;
-            updateOrderSummary();
-        }
+            badge.innerText = cartManager.getCartCount();
+            totalAmount.innerText = `${cartManager.getCartTotal()} PKR`;
 
-        document.getElementById('confirm-order').addEventListener('click', async () => {
-            const name = document.getElementById('order_name').value;
-            const phone = document.getElementById('order_phone').value;
-
-            if (!name || !phone) {
-                alert('Please enter your name and phone number.');
+            if (items.length === 0) {
+                container.innerHTML = `<p style="text-align: center; color: var(--text-muted); margin-top: 2rem;">Your cart is empty.</p>`;
                 return;
             }
 
-            try {
-                const { error } = await supabaseClient
-                    .from('orders')
-                    .insert([{
-                        member_name: name,
-                        member_phone: phone,
-                        product_id: currentProduct.id,
-                        quantity: currentProduct.qty,
-                        total_price: currentProduct.total,
-                        status: 'pending'
-                    }]);
+            container.innerHTML = items.map(item => `
+                <div class="cart-item">
+                    <img src="${item.image_url}" class="cart-item-img" onerror="this.src='https://via.placeholder.com/200?text=Product'">
+                    <div class="cart-item-info">
+                        <h5>${item.name}</h5>
+                        <p class="cart-item-price">${item.price} PKR</p>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
+                            <button onclick="cartManager.updateQuantity('${item.id}', ${item.quantity - 1})" class="btn" style="padding: 2px 8px; font-size: 0.8rem;">-</button>
+                            <span>${item.quantity}</span>
+                            <button onclick="cartManager.updateQuantity('${item.id}', ${item.quantity + 1})" class="btn" style="padding: 2px 8px; font-size: 0.8rem;">+</button>
+                            <button onclick="cartManager.removeFromCart('${item.id}')" style="margin-left: auto; background: none; border: none; color: #ff4444; cursor: pointer;">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
 
-                if (error) throw error;
+        // Sidebar Toggle
+        const cartSidebar = document.getElementById('cart-sidebar');
+        const cartOverlay = document.getElementById('cart-overlay');
+        const openCartBtn = document.getElementById('open-cart');
+        const closeCartBtn = document.getElementById('close-cart');
 
-                const message = `*NEW ORDER - GERMAN FITNESS*\n\n` +
-                    `*Customer:* ${name}\n` +
-                    `*Phone:* ${phone}\n` +
-                    `*Product:* ${currentProduct.name}\n` +
-                    `*Quantity:* ${currentProduct.qty} Units\n` +
-                    `*Total Price:* ${currentProduct.total} PKR\n\n` +
-                    `_Please process this order._`;
+        function toggleCart() {
+            cartSidebar.classList.toggle('active');
+            cartOverlay.classList.toggle('active');
+        }
 
-                const whatsappUrl = `https://wa.me/923009692474?text=${encodeURIComponent(message)}`;
-                window.open(whatsappUrl, '_blank');
-                
-                document.getElementById('purchase-modal').style.display = 'none';
-                document.getElementById('order_name').value = '';
-                document.getElementById('order_phone').value = '';
+        openCartBtn.addEventListener('click', toggleCart);
+        closeCartBtn.addEventListener('click', toggleCart);
+        cartOverlay.addEventListener('click', toggleCart);
 
-            } catch (error) {
-                console.error('Error placing order:', error);
-                alert('Error placing order. Please try again.');
+        // Subscribe UI to cart changes
+        cartManager.subscribe(updateCartUI);
+
+        // Checkout Button
+        document.getElementById('checkout-btn').addEventListener('click', () => {
+            if (cartManager.getItems().length === 0) {
+                alert('Your cart is empty!');
+                return;
             }
+            window.location.href = 'checkout.html';
         });
 
-        document.getElementById('close-purchase-modal').addEventListener('click', () => {
-            document.getElementById('purchase-modal').style.display = 'none';
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+            updateCartUI(); // Initial render
         });
 
-        document.addEventListener('DOMContentLoaded', loadProducts);
     </script>
 </body>
 </html>

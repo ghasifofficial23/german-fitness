@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
     <style>
         .login-page {
             height: 100vh;
@@ -44,9 +45,7 @@
     </div>
 
     <script>
-        const SUPABASE_URL = 'https://kpgzuapbllzhatakkcts.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_fL8D4BepEkupdCNsnMaW1Q_E76Za12D';
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const supabaseClient = window.supabaseClient;
 
         const loginForm = document.getElementById('login-form');
         loginForm.addEventListener('submit', async (e) => {

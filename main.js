@@ -1,11 +1,23 @@
-const SUPABASE_URL = 'https://kpgzuapbllzhatakkcts.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_fL8D4BepEkupdCNsnMaW1Q_E76Za12D';
 let supabaseClient;
 let currentProduct = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize Supabase
-    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    supabaseClient = window.supabaseClient;
+    if (!supabaseClient) {
+        console.error('Supabase client not initialized. Check config.js');
+    }
+
+    // Check for payment status in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentStatus = urlParams.get('payment');
+    if (paymentStatus === 'success') {
+        alert('Payment Successful! Your order has been placed.');
+        // Clean URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    } else if (paymentStatus === 'failed') {
+        alert('Payment Failed or Cancelled. Please try again.');
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
 
     // --- Mobile Menu ---
     const mobileMenu = document.getElementById('mobile-menu');
@@ -112,14 +124,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            const info = selectedPaymentMethod ? paymentInfo[selectedPaymentMethod] : null;
             confirmDetails.innerHTML = `
-                <p><strong>Name:</strong> ${formData.fullName}</p>
-                <p><strong>Gender:</strong> ${formData.gender}</p>
-                <p><strong>Phone:</strong> ${formData.phone}</p>
-                <p><strong>Start Date:</strong> ${formData.joinDate}</p>
-                <p><strong>Plans:</strong> ${formData.packages.join(', ')}</p>
-                <p><strong>Payment:</strong> ${formData.paymentMethod}</p>
-                <p style="font-size: 1.5rem; margin-top: 1rem;"><strong>Total: ${formData.totalBill} PKR</strong></p>
+                <div style="border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem; margin-bottom: 1rem;">
+                    <p><strong>Name:</strong> ${formData.fullName}</p>
+                    <p><strong>Gender:</strong> ${formData.gender}</p>
+                    <p><strong>Phone:</strong> ${formData.phone}</p>
+                    <p><strong>Start Date:</strong> ${formData.joinDate}</p>
+                    <p><strong>Plans:</strong> ${formData.packages.join(', ')}</p>
+                </div>
+                <div style="background: rgba(204, 255, 0, 0.05); padding: 1rem; border-radius: 10px; border: 1px solid rgba(204, 255, 0, 0.1);">
+                    <p><strong>Payment Method:</strong> ${formData.paymentMethod}</p>
+                    ${info ? `
+                        <p><strong>Account:</strong> ${info.account}</p>
+                        <p><strong>Holder:</strong> ${info.holder}</p>
+                    ` : ''}
+                    <p style="font-size: 1.5rem; margin-top: 0.5rem; color: var(--accent);"><strong>Total: ${formData.totalBill} PKR</strong></p>
+                </div>
+                <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted);">Please ensure you have sent the amount and have the screenshot ready.</p>
             `;
             modal.style.display = 'flex';
         });
@@ -155,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     `*Total Bill:* ${formData.totalBill} PKR\n\n` +
                     `_I am sending the payment screenshot for verification._`;
 
-                const whatsappUrl = `https://wa.me/923009692474?text=${encodeURIComponent(message)}`;
+                const whatsappUrl = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
                 window.location.href = whatsappUrl;
                 modal.style.display = 'none';
                 membershipForm.reset();
@@ -165,6 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 selectedPaymentMethod = '';
 
             } catch (error) {
+                console.error('Registration Error:', error);
                 alert('Error: ' + error.message);
             } finally {
                 confirmSubmitBtn.disabled = false;
@@ -222,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     `*Total Price:* ${currentProduct.total} PKR\n\n` +
                     `_Please process this order._`;
 
-                const whatsappUrl = `https://wa.me/923009692474?text=${encodeURIComponent(message)}`;
+                const whatsappUrl = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
                 window.location.href = whatsappUrl;
                 
                 purchaseModal.style.display = 'none';
@@ -230,6 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('order_phone').value = '';
 
             } catch (error) {
+                console.error('Purchase Modal Error:', error);
                 alert('Error placing order: ' + error.message);
             }
         });
@@ -254,16 +278,22 @@ async function loadHotSelling() {
         hotSellingContainer.innerHTML = products.map(product => {
             const isOutOfStock = product.stock <= 0;
             return `
-                <div class="product-card" onclick="${isOutOfStock ? '' : `openPurchaseModal('${product.id}', '${product.name}', ${product.price})`}" style="${isOutOfStock ? 'opacity: 0.7; cursor: not-allowed;' : 'cursor: pointer;'}">
+                <div class="product-card" style="${isOutOfStock ? 'opacity: 0.7;' : ''}">
                     <div class="product-image">
                         <img src="${product.image_url}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/200?text=Product'">
                     </div>
                     <div class="product-info">
                         <h4>${product.name}</h4>
-                        <p class="product-price">
+                        <div class="product-price">
                             <span>${product.price} PKR</span>
                             ${isOutOfStock ? '<span class="out-of-stock">Out of Stock</span>' : ''}
-                        </p>
+                        </div>
+                        <button onclick="${isOutOfStock ? '' : `addToCartHandler('${product.id}', '${product.name}', ${product.price}, '${product.image_url}')`}" 
+                                class="btn btn-primary btn-block" 
+                                style="margin-top: 1rem; ${isOutOfStock ? 'background: #333; cursor: not-allowed; color: #777;' : ''}"
+                                ${isOutOfStock ? 'disabled' : ''}>
+                            ${isOutOfStock ? 'Add to Cart' : 'Add to Cart'}
+                        </button>
                     </div>
                 </div>
             `;
@@ -273,6 +303,15 @@ async function loadHotSelling() {
         console.error('Error loading products:', error);
     }
 }
+
+function addToCartHandler(id, name, price, image_url) {
+    if (typeof cartManager !== 'undefined') {
+        cartManager.addToCart({ id, name, price, image_url });
+    } else {
+        console.error('CartManager not loaded');
+    }
+}
+
 
 function openPurchaseModal(id, name, price) {
     currentProduct = { id, name, price, qty: 1, total: price };
