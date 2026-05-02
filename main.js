@@ -177,7 +177,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     `*Total Bill:* ${formData.totalBill} PKR\n\n` +
                     `_I am sending the payment screenshot for verification._`;
 
-                const whatsappUrl = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+                const whatsappUrl = `https://api.whatsapp.com/send?phone=${CONFIG.WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`;
+                alert('Registration successful! Redirecting to WhatsApp for payment verification.');
                 window.location.href = whatsappUrl;
                 modal.style.display = 'none';
                 membershipForm.reset();
@@ -245,7 +246,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     `*Total Price:* ${currentProduct.total} PKR\n\n` +
                     `_Please process this order._`;
 
-                const whatsappUrl = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+                const whatsappUrl = `https://api.whatsapp.com/send?phone=${CONFIG.WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`;
+                alert('Order placed! Redirecting to WhatsApp...');
                 window.location.href = whatsappUrl;
                 
                 purchaseModal.style.display = 'none';

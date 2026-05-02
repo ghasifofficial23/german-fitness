@@ -308,12 +308,10 @@
                         `\n\n*Total:* ${cartManager.getCartTotal()} PKR\n` +
                         `*Payment:* Cash on Delivery`;
 
-                    const whatsappUrl = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-                    window.open(whatsappUrl, '_blank');
-                    
+                    const whatsappUrl = `https://api.whatsapp.com/send?phone=${CONFIG.WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`;
                     cartManager.clearCart();
                     alert('Order placed successfully! Redirecting to WhatsApp for confirmation.');
-                    window.location.href = 'index.html';
+                    window.location.href = whatsappUrl;
                 }
 
             } catch (error) {
