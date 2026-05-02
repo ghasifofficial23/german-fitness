@@ -310,7 +310,6 @@
 
                     const whatsappUrl = `https://api.whatsapp.com/send?phone=${CONFIG.WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`;
                     cartManager.clearCart();
-                    alert('Order placed successfully! Redirecting to WhatsApp for confirmation.');
                     window.location.href = whatsappUrl;
                 }
 
